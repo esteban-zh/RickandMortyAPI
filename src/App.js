@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react';
+import CardList from './components/CardList';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+
+  useEffect(() => {
+    const loadData = () => {
+      fetch("https://rickandmortyapi.com/api/character")
+      .then ((data) => data.json())
+      .then ((data) => {
+        console.log("datos", data);
+        setCharacters(data.results);
+      });
+    };
+    loadData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>rick and morty characters</h1>
+      <CardList items={characters}/>
     </div>
   );
 }
